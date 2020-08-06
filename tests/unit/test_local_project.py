@@ -26,6 +26,7 @@ from pathlib import Path
 import git
 from flexmock import flexmock
 
+from ogr import GithubService
 from packit import local_project, utils
 from packit.local_project import LocalProject
 from tests.spellbook import initiate_git_repo
@@ -383,7 +384,13 @@ def test_pr_id_and_ref(tmp_path: Path):
     )
     subprocess.check_call(["git", "branch", "-D", local_tmp_branch], cwd=upstream_git)
 
-    LocalProject(working_dir=str(upstream_git), offline=True, pr_id=pr_id, ref=ref)
+    LocalProject(
+        working_dir=str(upstream_git),
+        offline=True,
+        pr_id=pr_id,
+        ref=ref,
+        git_service=GithubService,
+    )
 
     assert (
         subprocess.check_output(
